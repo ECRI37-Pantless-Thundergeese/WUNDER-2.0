@@ -1,0 +1,48 @@
+$font: 'Oswald', sans-serif;
+
+.signupPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .signupBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 500px;
+    padding: 10px 20px;
+    background-color: #d2d2cf3e;
+    border-radius: 15px;
+    color: white;
+    font-family: $font;
+    letter-spacing: 2px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    .signupForm {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .formInfo {
+        padding: 10px 100px 10px 10px;
+      }
+
+      .signupBtn {
+        padding: 10px 50px;
+      }
+
+      input {
+        margin: 10px;
+        border-radius: 3px;
+        font-family: $font;
+
+      }
+    }
+
+  }
+
+}

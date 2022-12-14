@@ -9,8 +9,7 @@ const Icon = (iconData) => {
   const [visible, setVisible] = React.useState('');
 
   return (
-
-    <div>
+    < div >
       <img
         src={iconData.imgLink}
         id={iconData.park}
@@ -21,13 +20,13 @@ const Icon = (iconData) => {
         }}
       />
       <Modal
-        onClose={() => {return setShow(false); setVisible('')}}
+        onClose={() => { return setShow(false); setVisible('') }}
         show={show}
         parkName={parkName}
         parkCode={parkCode}
         className={visible}
       />
-    </div>
+    </div >
   );
 
   // we also need an onclick handler

@@ -24,7 +24,9 @@ module.exports = {
     proxy: {
       '/': 'http://localhost:3000',
       '/login': 'http://localhost:3000',
+      '/signup/request': 'http://localhost:3000',
       '/home/user': 'http://localhost:3000',
+      '/home/NPS': 'http://localhost:3000',
     },
   },
   plugins: [
