@@ -19,19 +19,17 @@ const Modal = (props) => {
 
   // send fetch request to DB to get user info
   useEffect(() => {
-    fetch(`http://localhost:3000/NPS/modalInfo/${props.parkCode}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setNpsData(data);
-        console.log('data from NPS get request: ', data);
+    axios.get(`http://localhost:3000/home/NPS/modalInfo/${props.parkCode}`, { withCredentials: true })
+      .then((res) => {
+        setNpsData(res.data);
+        console.log('data from NPS get request: ', res.data);
       })
       .catch((err) => console.log('error fetching NPS data', err));
 
-    fetch(`http://localhost:3000/user/${props.parkCode}`)
-      .then((res) => res.json())
-      .then((data) => {
+    axios.get(`http://localhost:3000/home/user/${props.parkCode}`, { withCredentials: true })
+      .then((res) => {
         // console.log('data in the modal is: ', data);
-        setUserData(data);
+        setUserData(res.data);
         // console.log('user data: ', data);
       })
       .catch((err) => console.log('error getting user data', err));
@@ -102,7 +100,7 @@ const Modal = (props) => {
       <div className="content" onClick={(e) => e.stopPropagation()}>
         <div className="header">
           <h3 className="title">
-            {props.parkName + ' National Park '} <br/>
+            {props.parkName + ' National Park '} <br />
             <small className="state">{stateObj[npsData.states]}</small>
           </h3>
           <button className="close" onClick={props.onClose}>
