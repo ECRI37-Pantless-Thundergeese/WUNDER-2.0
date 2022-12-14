@@ -22,9 +22,9 @@ module.exports = {
     },
 
     proxy: {
-      // '/': 'http://localhost:3000',
+      '/': 'http://localhost:3000',
       '/login': 'http://localhost:3000',
-      '/user' : 'http://localhost:3000',
+      '/home/user': 'http://localhost:3000',
     },
   },
   plugins: [
