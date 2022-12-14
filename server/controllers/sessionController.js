@@ -8,15 +8,20 @@ const sessionController = {};
 sessionController.isLoggedIn = (req, res, next) => {};
 
 //startSession - create and save a new Session into the database
-// sessionController.startSession = (req, res, next) => {
-//   Session.create({ cookieId: res.locals./*userArr[0]._id*/ }, (err, cb) => {
-//     if (err)
-//       next({
-//         log: 'ERROR in isLoggedIn in sessionController',
-//         err: 'an error occurred',
-//       });
-//     return next();
-//   });
-// };
+sessionController.startSession = (req, res, next) => {
+  // we have cookie with SSID 
+  Session.create({ cookieID: res.locals.userID})
+    .then((data) => {
+      console.log('This session has been started')
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: 'Caught error in startSession middleware',
+        status: 400,
+        message: { err: 'An unknown error occured.' },
+      });
+    })
+};
 
 module.exports = sessionController;

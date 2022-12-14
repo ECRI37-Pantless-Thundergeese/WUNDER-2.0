@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/userModel.js');
+const bcrypt = require('bcryptjs')
 
 const userController = {};
 
@@ -60,10 +61,11 @@ userController.addPark = async (req, res, next) => {
 
 // Get parks completed array for icon coloring on landing page
 userController.getParks = (req, res, next) => {
-  // User.findOne({ name: req.body.name})
-  User.findOne({ name: 'Aalok' })
-    .then((user) => {
-      res.locals.parks = Object.keys(user.parksVisited); // <-- send back array of parks completed
+  const {userID} = res.locals
+  
+  User.findOne({_id: userID})
+    .then((userData) => {
+      res.locals.parks = Object.keys(userData.parksVisited); // <-- send back array of parks completed
       return next();
     })
     .catch((err) => {
@@ -85,5 +87,50 @@ userController.getParkInfo = (req, res, next) => {
     return next(err);
   }
 };
+
+userController.verifyUser = (req, res, next) => {
+  const { password, username } = req.body; 
+
+  User.findOne({ username: `${username}`})
+    .then((doc) => {
+      // if username doesn't exist, send them to sign up
+      if (!doc) {
+        const signup = confirm('username not found, would you like to sign up?')
+        if (signup) {
+          return res.redirect('/signup')
+        } else {
+          return res.redirect('/')
+        }
+      }
+      // check password
+      bcrypt
+        .compare(password, doc.password)
+        .then((result) => {
+          if (!result) {
+            console.log('incorrect username or password')
+            return res.redirect('/')
+          } else {
+            res.locals.userID = doc._id;
+            console.log('should log ID :', doc._id)
+            return next();
+          }
+        })
+        .catch((err) => {
+          return next({
+          log: 'Caught error while verifying password in verifyUser middleware',
+          status: 400,
+          message: { err: 'An unknown error occured.' },
+        })
+      })
+    .catch((err) => {
+      return next({
+        log: 'Caught error while verifying username in verifyUser middleware',
+        status: 400,
+        message: { err: 'An unknown error occured.' },
+      });
+    })
+  });
+};
+
 
 module.exports = userController;
