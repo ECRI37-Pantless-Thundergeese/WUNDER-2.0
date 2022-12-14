@@ -61,10 +61,11 @@ userController.addPark = async (req, res, next) => {
 
 // Get parks completed array for icon coloring on landing page
 userController.getParks = (req, res, next) => {
-  // User.findOne({ name: req.body.name})
-  User.findOne({ name: 'Aalok' })
-    .then((user) => {
-      res.locals.parks = Object.keys(user.parksVisited); // <-- send back array of parks completed
+  const {userID} = res.locals
+  
+  User.findOne({_id: userID})
+    .then((userData) => {
+      res.locals.parks = Object.keys(userData.parksVisited); // <-- send back array of parks completed
       return next();
     })
     .catch((err) => {
@@ -109,18 +110,27 @@ userController.verifyUser = (req, res, next) => {
             console.log('incorrect username or password')
             return res.redirect('/')
           } else {
-            return res.redirect('/home')
+            res.locals.userID = doc._id;
+            console.log('should log ID :', doc._id)
+            return next();
           }
         })
         .catch((err) => {
           return next({
-          log: 'Caught unknown error in verifyUser middleware',
+          log: 'Caught error while verifying password in verifyUser middleware',
           status: 400,
           message: { err: 'An unknown error occured.' },
+        })
       })
+    .catch((err) => {
+      return next({
+        log: 'Caught error while verifying username in verifyUser middleware',
+        status: 400,
+        message: { err: 'An unknown error occured.' },
+      });
     })
-}
-
+  });
+};
 
 
 module.exports = userController;
