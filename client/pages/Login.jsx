@@ -5,6 +5,7 @@ const Login = (props) => {
   return (
     <div className="loginPage">
       <div className="loginBox">
+        <img src="https://www.nps.gov/articles/images/NPS-Transparent-Logo.png" alt="National Parks Logo" id="npslogo" />
         <form className="loginForm" method="POST" action="/login">
           <input className="formInfo" id="username" name="username" type="text" placeholder="Username"></input>
           <input className="formInfo" id="password" name="password" type="password" placeholder="Password"></input>
