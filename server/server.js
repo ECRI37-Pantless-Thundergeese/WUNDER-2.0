@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRouter = require('./routers/userRouter');
 const NPSRouter = require('./routers/NPSRouter');
@@ -8,7 +9,7 @@ const { default: mongoose } = require('mongoose');
 const app = express();
 
 const MONGO_URI =
-  'mongodb+srv://Wunder:wunderpus@wunder.ldeokyo.mongodb.net/?retryWrites=true&w=majority';
+  'mongodb+srv://kolashah:thundergoose@cluster0.h35s0uw.mongodb.net/?retryWrites=true&w=majority';
 
 const db = process.env.NODE_ENV === 'test' ? 'Testing' : 'WunderThunderGoose';
 
@@ -16,29 +17,36 @@ mongoose.connect(MONGO_URI, {
   useNewURLParser: true,
   dbName: db,
 })
-.then(() => console.log('Connected to Mongo DB.'))
-.catch((err) => console.log(err));
+  .then(() => console.log('Connected to Mongo DB.'))
+  .catch((err) => console.log(err));
 
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+// allows us to pass credentials from 8080 to 3000
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
-app.use(express.static(path.resolve(__dirname, '../client')));
+// app.use(express.static(path.resolve(__dirname, '../client')));
 
 // Set up routers for '/NPS'
 app.use('/NPS', NPSRouter);
 
 // Set up routers for '/user'
-app.use('/user', userRouter);
+app.use('/home/user', userRouter);
 
 // Handle serving of static files
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-
-app.get('/', (_req, res) => {
-  return res
-    .status(200)
-    .sendFile(path.join(__dirname, '../client/public/index.html'));
-});
+// app.get('/', (_req, res) => {
+//   return res
+//     .status(200)
+//     .sendFile(path.join(__dirname, '../client/public/index.html'));
+// });
 
 app.get('*', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../build/client/public/index.html'));
