@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import SidebarContainer from '../containers/SidebarContainer.jsx';
 import MainContainer from '../containers/MainContainer.jsx';
@@ -11,15 +12,12 @@ const App = () => {
   // };
 
   useEffect(() => {
-    fetch('http://localhost:3000/user/', {
-      method: 'GET',
-      headers: { 'Content-Type': 'Application/JSON' },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCodes(data);
+    // withCredentials require cookies to be passed in to headers
+    axios.get('http://localhost:3000/home/user', { withCredentials: true })
+      .then((res) => {
+        setCodes(res.data);
       })
-      .catch((err) => console.log('AddPark fetch POST to api: ERROR: ', err));
+      .catch((err) => console.log('Initial fetch GET request to DB: ERROR: ', err));
   }, []);
 
 
