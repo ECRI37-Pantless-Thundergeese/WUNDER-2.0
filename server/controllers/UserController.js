@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/userModel.js');
+const bcrypt = require('bcryptjs')
 
 const userController = {};
 
@@ -85,5 +86,41 @@ userController.getParkInfo = (req, res, next) => {
     return next(err);
   }
 };
+
+userController.verifyUser = (req, res, next) => {
+  const { password, username } = req.body; 
+
+  User.findOne({ username: `${username}`})
+    .then((doc) => {
+      // if username doesn't exist, send them to sign up
+      if (!doc) {
+        const signup = confirm('username not found, would you like to sign up?')
+        if (signup) {
+          return res.redirect('/signup')
+        } else {
+          return res.redirect('/')
+        }
+      }
+      // check password
+      bcrypt
+        .compare(password, doc.password)
+        .then((result) => {
+          if (!result) {
+            console.log('incorrect username or password')
+            return res.redirect('/')
+          } else {
+            return res.redirect('/home')
+          }
+        })
+        .catch((err) => {
+          return next({
+          log: 'Caught unknown error in verifyUser middleware',
+          status: 400,
+          message: { err: 'An unknown error occured.' },
+      })
+    })
+}
+
+
 
 module.exports = userController;
