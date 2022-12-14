@@ -10,8 +10,9 @@ sessionController.isLoggedIn = (req, res, next) => {};
 //startSession - create and save a new Session into the database
 sessionController.startSession = (req, res, next) => {
   // we have cookie with SSID 
-  Session.create({ cookieID: res.locals.userID})
+  Session.create({ cookieId: res.locals.userID })
     .then((data) => {
+      console.log('cookiedata :', data);
       console.log('This session has been started')
       return next();
     })

@@ -57,9 +57,9 @@ NPSController.getModalInfo = async (req, res, next) => {
       webcam: (webcam.data.data.length > 0 ? webcam.data.data[0].url : null),
     };
     res.locals.modalInfo = modalInfo;
-    next();
+    return next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 

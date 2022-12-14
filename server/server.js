@@ -5,6 +5,9 @@ const path = require('path');
 const userRouter = require('./routers/userRouter');
 const NPSRouter = require('./routers/NPSRouter');
 const { default: mongoose } = require('mongoose');
+const userController = require('./controllers/UserController')
+const cookieController = require('./controllers/cookieController');
+const sessionController = require('./controllers/sessionController');
 
 const app = express();
 
@@ -38,6 +41,21 @@ app.use('/NPS', NPSRouter);
 
 // Set up routers for '/user'
 app.use('/home/user', userRouter);
+
+app.post('/signup/request', 
+  userController.createUser,
+  (req, res) => {
+    return res.redirect('/')
+})
+
+app.post('/login', 
+  userController.verifyUser,
+  cookieController.setSSIDCookie,
+  sessionController.startSession, 
+  (req, res) => {
+    return res.redirect('/home');
+    // return res.status(200).json(res.locals.parks);
+});
 
 // Handle serving of static files
 app.use('/build', express.static(path.join(__dirname, '../build')));
