@@ -5,20 +5,27 @@ module.exports = {
   entry: path.join(__dirname, './client/public/main.js'),
   mode: process.env.NODE_ENV,
   output: {
-    path: path.join(__dirname, '/build/'),
-    publicPath: '/build/',
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
     filename: 'bundle.js',
   },
+  devtool: 'eval-source-map',
   devServer: {
-    static: {
-      directory: path.resolve(__dirname, 'client/components/public'),
-      publicPath: 'bundle.js',
-    },
-    proxy: {
-      '/': 'http://localhost:3000',
-    },
+    host: 'localhost',
     port: 8080,
-    magicHtml: true,
+    hot: true,
+    historyApiFallback: true,
+
+    static: {
+      directory: path.resolve(__dirname, 'build'),
+      publicPath: '/',
+    },
+
+    proxy: {
+      // '/': 'http://localhost:3000',
+      '/login': 'http://localhost:3000',
+      '/user' : 'http://localhost:3000',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
