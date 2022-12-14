@@ -6,9 +6,9 @@ const App = () => {
   // let codes = [];
   const [codes, setCodes] = useState([]);
 
-  const handleUpdate = (newData) => {
-    setData([newData, ...data]);
-  };
+  // const handleUpdate = (newData) => {
+  //   setData([newData, ...data]);
+  // };
 
   useEffect(() => {
     fetch('http://localhost:3000/user/', {

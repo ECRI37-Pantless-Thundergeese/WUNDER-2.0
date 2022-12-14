@@ -1,11 +1,11 @@
 {
-  "name": "wunderparks",
+  "name": "WUNDER-2.0",
   "description": "",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "webpack.config.js",
   "scripts": {
     "start": "NODE_ENV=production nodemon server/server.js",
-    "dev": "NODE_ENV=development nodemon server/server.js & NODE_ENV=development webpack serve",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot \" \"nodemon ./server/server.js\"",
     "build": "NODE_ENV=production webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "front": "NODE_ENV=development webpack-dev-server --open",
@@ -13,18 +13,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wunderparks/wunderparks.git"
+    "url": "git+https://github.com/ECRI37-Pantless-Thundergeese/WUNDER-2.0.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Wunderparks/wunderparks/issues"
   },
-  "homepage": "https://github.com/Wunderparks/wunderparks#readme",
+  "homepage": "https://github.com/ECRI37-Pantless-Thundergeese/WUNDER-2.0#readme",
   "dependencies": {
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
     "axios": "^1.2.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.2",
@@ -36,10 +37,13 @@
     "mongoose": "^6.8.0",
     "nodemon": "^2.0.20",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-native-confetti-cannon": "^1.5.2",
+    "react-router": "^6.4.4",
+    "react-router-dom": "^6.4.5",
     "tailwindcss": "^3.2.4",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.3",
@@ -55,11 +59,15 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/runtime": "^7.20.6",
     "babel-loader": "^9.1.0",
+    "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.2",
+    "react-router-dom": "^6.4.5",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
   }
 }

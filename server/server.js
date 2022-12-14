@@ -22,6 +22,8 @@ mongoose.connect(MONGO_URI, {
 app.use(express.json());
 app.use(cors());
 
+app.use(express.static(path.resolve(__dirname, '../client')));
+
 // Set up routers for '/NPS'
 app.use('/NPS', NPSRouter);
 
@@ -31,10 +33,15 @@ app.use('/user', userRouter);
 // Handle serving of static files
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
+
 app.get('/', (_req, res) => {
   return res
     .status(200)
     .sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
+app.get('*', (req, res) => {
+  return res.status(200).sendFile(path.join(__dirname, '../build/client/public/index.html'));
 });
 
 app.use((_req, res) => res.sendStatus(404));
