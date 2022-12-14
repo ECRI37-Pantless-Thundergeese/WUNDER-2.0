@@ -5,18 +5,18 @@ const bcrypt = require('bcryptjs')
 const userController = {};
 
 // Create a new user in the database
-userController.createUser = async (req, res, next) => {
-  console.log('in');
-  try {
-    const user = await User.create({
-      name: req.body.name,
-      parksVisited: {},
-    });
-    res.locals.newUser = user; // <-- send back all user info
+userController.createUser = (req, res, next) => {
+  console.log('req.body :', req.body)
+  const { username, password, name} = req.body
+  
+  User.create({ username, password, name })
+    .then((user) => {
+    res.locals.newUser = user
     return next();
-  } catch (err) {
+  })
+   .catch ((err) => {
     return next(err);
-  }
+  });
 };
 
 // Get user info
@@ -50,7 +50,7 @@ userController.addPark = async (req, res, next) => {
       const parksVisited = { ...user.parksVisited, [parkCode]: newPark };
       user.parksVisited = parksVisited;
       const newUser = await user.save();
-      console.log(newUser);
+      console.log('newuser :', newUser);
     }
     res.locals.park = user.parksVisited[parkCode]; // <-- send back the newly added park's info
     return next();
@@ -60,7 +60,7 @@ userController.addPark = async (req, res, next) => {
 };
 
 // Get parks completed array for icon coloring on landing page
-userController.getParks = (req, res, next) => {
+userController.getParks = (_req, res, next) => {
   const {userID} = res.locals
   
   User.findOne({_id: userID})
@@ -80,7 +80,7 @@ userController.getParkInfo = (req, res, next) => {
     const { parkCode } = req.params;
     const { parksVisited } = res.locals.user;
     // console.log(parkCode);
-    console.log(parksVisited);
+    console.log('parks visited :', parksVisited);
     res.locals.parkInfo = parksVisited[parkCode];
     return next();
   } catch (err) {
@@ -90,18 +90,13 @@ userController.getParkInfo = (req, res, next) => {
 
 userController.verifyUser = (req, res, next) => {
   const { password, username } = req.body; 
-
+  console.log('inside verifyUser')
   User.findOne({ username: `${username}`})
     .then((doc) => {
       // if username doesn't exist, send them to sign up
       if (!doc) {
-        const signup = confirm('username not found, would you like to sign up?')
-        if (signup) {
           return res.redirect('/signup')
-        } else {
-          return res.redirect('/')
         }
-      }
       // check password
       bcrypt
         .compare(password, doc.password)
