@@ -6,15 +6,15 @@ const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema(
   {
-    username: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     name: { type: String, required: false },
-    parksVisited: {},
+    parksVisited: { type: Object, required: true },
   },
   { minimize: false }
 );
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   const user = this;
   bcrypt.hash(user.password, SALT_WORK_FACTOR)
     .then((hash) => {
@@ -23,7 +23,7 @@ userSchema.pre('save', function(next) {
     })
     .catch((err) => next({
       log: `hash in userModel: ERROR: ${typeof err === `object` ? JSON.stringify(err) : err}`,
-      message: {err: 'Error occurred in hash method of userModel'}
+      message: { err: 'Error occurred in hash method of userModel' }
     }))
 })
 
