@@ -7,7 +7,7 @@ const App = () => {
   // let codes = [];
   const [name, setName] = useState('')
   const [codes, setCodes] = useState([])
-  const [userParkData, setUserParkData] = useState([])
+  const [userParkData, setUserParkData] = useState({})
   // const handleUpdate = (newData) => {
   //   setData([newData, ...data]);
   // };
@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <SidebarContainer codes={codes} />
+      <SidebarContainer userParkData={userParkData} codes={codes} />
       <div className="right">
         <div className="float">
           <h1> WÜNDER PARKS</h1>

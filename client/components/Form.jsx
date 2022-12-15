@@ -30,10 +30,11 @@ const Sidebar = (props) => {
   });
 
   const [parkCode, setParkCode] = useState('');
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState('')
   const [error, setError] = useState(null);
 
   function toggleActivities(item) {
+    console.log('userParkData')
     // console.log('checkbox for item clicked', item);
     activities[item] = !activities[item];
     // console.log('activities state is: ', activities);
@@ -51,10 +52,9 @@ const Sidebar = (props) => {
       for (let item in activities) {
         activities[item] && activitiesDone.push(item);
       }
-      setUserParkData({ ...userParkData, [parkCode]: { date, activitiesDone, notes } });
-      // console.log({ parkCode, date, activitiesDone, notes });
-      axios.put(`http://localhost:3000/home/user/`, userParkData, { withCredentials: true })
-        .then(window.location.reload(false))
+      const data = { ...userParkData, [parkCode]: { date, activitiesDone, notes } };
+      axios.put(`http://localhost:3000/home/user/`, data, { withCredentials: true })
+        // .then(window.location.reload(false))
         .then((data) => { })
         .catch((err) => console.log('AddPark fetch POST to api: ERROR: ', err));
     }
@@ -81,7 +81,7 @@ const Sidebar = (props) => {
           type="checkbox"
           id={element}
           value={activities[element]}
-          onChange={(e) => toggleActivities(e.target.id)} />{' '}{element[0].toUpperCase() + element.substring(1)}
+          onChange={(e) => toggleActivities(e.target.id)} />{' ' + element[0].toUpperCase() + element.substring(1)}
       </label>
     )
   })

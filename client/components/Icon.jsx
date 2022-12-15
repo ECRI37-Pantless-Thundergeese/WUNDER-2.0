@@ -3,10 +3,10 @@ import Modal from './modal/modal.jsx';
 
 const Icon = (iconData) => {
 
-  const [show, setShow] = React.useState(false);
-  const [parkName, setName] = React.useState(iconData.park);
-  const [parkCode, setCode] = React.useState(iconData.parkCode);
-  const [visible, setVisible] = React.useState('');
+  const [show, setShow] = useState(false);
+  const [parkName, setName] = useState(iconData.park);
+  const [parkCode, setCode] = useState(iconData.parkCode);
+  const [visible, setVisible] = useState('');
 
   return (
     < div >
