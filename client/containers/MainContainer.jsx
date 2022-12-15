@@ -8,8 +8,8 @@ const MainContainer = (props) => {
   // return out the HTML elements
   return (
     <div className="main" id="mainContainer">
-      <IconMaker 
-        codes={props.codes}/>
+      <IconMaker userParkData={props.userParkData}
+        codes={props.codes} />
     </div>
   );
 };

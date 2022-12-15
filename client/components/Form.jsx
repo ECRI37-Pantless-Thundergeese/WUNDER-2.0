@@ -14,6 +14,7 @@ import parkcodes from '../public/parkcodes.js';
 // };
 
 const Sidebar = (props) => {
+  const [userParkData, setUserParkData] = useState(props.userParkData);
   const [date, setDate] = useState('');
   const [activities, setActivities] = useState({
     biking: false,
@@ -50,8 +51,9 @@ const Sidebar = (props) => {
       for (let item in activities) {
         activities[item] && activitiesDone.push(item);
       }
+      setUserParkData({ ...userParkData, [parkCode]: { date, activitiesDone, notes } });
       // console.log({ parkCode, date, activitiesDone, notes });
-      axios.post(`http://localhost:3000/home/user/${parkCode}`, { parkCode, date, activitiesDone, notes }, { withCredentials: true })
+      axios.put(`http://localhost:3000/home/user/`, userParkData, { withCredentials: true })
         .then(window.location.reload(false))
         .then((data) => { })
         .catch((err) => console.log('AddPark fetch POST to api: ERROR: ', err));
@@ -72,19 +74,17 @@ const Sidebar = (props) => {
 
   const activityCheckbox = [];
 
-  // activityOptions.forEach((element) => {
-  //   activityCheckbox.push(
-  //     <input
-  //       type="checkbox"
-  //       id={element}
-  //       value={activities[element]}
-  //       onChange={(e) => toggleActivities(e.target.id)}
-  //     />{ ' '}
-  //   < label htmlFor = { element } > { element[0].toUpperCase() + element.substring(1) }</label >
-  // )
-  // }
-  // )
-
+  activityOptions.forEach((element) => {
+    activityCheckbox.push(
+      <label htmlFor={element}>
+        <input
+          type="checkbox"
+          id={element}
+          value={activities[element]}
+          onChange={(e) => toggleActivities(e.target.id)} />{' '}{element[0].toUpperCase() + element.substring(1)}
+      </label>
+    )
+  })
 
   // render an option element for Select, pass in the parkCode value as value, and give the label/input as the parkCode key
 
@@ -94,7 +94,6 @@ const Sidebar = (props) => {
         <h2>Log a trip</h2>
         <div className="select-dropdown">
           <select
-            name="park"
             id="park"
             className="select-dropdown"
             value={parkCode}
@@ -107,7 +106,6 @@ const Sidebar = (props) => {
 
         <h3>Date Visited:</h3>
         <input
-          name="date"
           type="date"
           id="date_visited"
           value={date}
@@ -116,81 +114,11 @@ const Sidebar = (props) => {
 
         <h3>Activities Done</h3>
         <div className="checkboxes">
-          <input
-            type="checkbox"
-            id="biking"
-            value={activities.biking}
-            onChange={(e) => toggleActivities(e.target.id)}
-          />{' '}
-          <label htmlFor="biking">Biking</label>
-          <input
-            type="checkbox"
-            id="camping"
-            value={activities.camping}
-            onChange={(e) => toggleActivities(e.target.id)}
-          />{' '}
-          <label htmlFor="camping">Camping</label>
-          <input
-            type="checkbox"
-            id="climbing"
-            value={activities.climbing}
-            onChange={(e) => toggleActivities(e.target.id)}
-          />{' '}
-          <label htmlFor="climbing">Climbing</label>
-          <input
-            type="checkbox"
-            id="fishing"
-            value={activities.fishing}
-            onChange={(e) => toggleActivities(e.target.id)}
-          />{' '}
-          <label htmlFor="">Fishing</label>
-          <input
-            type="checkbox"
-            id="guided"
-            value={activities.guided}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="guided">Guided Tours</label>
-          <input
-            type="checkbox"
-            id="hiking"
-            value={activities.hiking}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="hiking">Hiking</label>
-          <input
-            type="checkbox"
-            id="paddling"
-            value={activities.paddling}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="">Paddling</label>
-          <input
-            type="checkbox"
-            id="snorkeling"
-            value={activities.snorkeling}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="snorkeling">Snorkeling</label>
-          <input
-            type="checkbox"
-            id="swimming"
-            value={activities.swimming}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="swimming">Swimming</label>
-          <input
-            type="checkbox"
-            id="wildlife"
-            value={activities.wildlife}
-            onChange={(event) => toggleActivities(event.target.id)}
-          />{' '}
-          <label htmlFor="wildlife">Wildlife</label>
+          {activityCheckbox}
         </div>
         <h3>Notes:</h3>
         <textarea
           className="comments"
-          name="notes"
           placeholder="Weather was great, but the crowd wasn't..."
           rows="10"
           cols="28"
@@ -205,8 +133,7 @@ const Sidebar = (props) => {
         <li>Stretch Feature</li>
         <li>Stretch Feature</li> */}
 
-        <input type="submit" id="submit" value="Save Park" onClick={savePark}>
-        </input>
+        <button id="submit" onClick={savePark}>Save Park</button>
         {error ? <span className="errorMsg">{error}</span> : null}
       </form>
       {/* <ParkTally /> */}
