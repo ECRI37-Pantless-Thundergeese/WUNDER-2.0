@@ -1,5 +1,6 @@
 const express = require('express');
 const NPSController = require('../controllers/NPSController');
+const weatherController = require('../controllers/weatherController');
 
 const NPSRouter = express.Router();
 
@@ -15,6 +16,7 @@ NPSRouter.get(
   '/modalInfo/:parkCode',
   NPSController.getPark,
   NPSController.getModalInfo,
+  weatherController.getWeather,
   (_req, res) => {
     return res.status(200).json(res.locals.modalInfo);
   }

@@ -10,6 +10,7 @@ const Modal = (props) => {
   // declare userData using hooks
   const [userData, setUserData] = useState(props.userParkData);
   const [npsData, setNpsData] = useState([]);
+  const [weatherData, setWeatherData] = useState('');
 
   // const testData = {
   //   date: '12/10/22',
@@ -22,7 +23,10 @@ const Modal = (props) => {
     axios.get(`http://localhost:3000/NPS/modalInfo/${props.parkCode}`, { withCredentials: true })
       .then((res) => {
         setNpsData(res.data);
-        console.log('data from NPS get request: ', res.data);
+        const { temp } = res.data.weather.main
+        setWeatherData(temp)
+        console.log('data from NPS get request: ', temp)
+        console.log('data from weather: ', temp)
       })
       .catch((err) => console.log('error fetching NPS data', err));
   }, []);
@@ -95,6 +99,9 @@ const Modal = (props) => {
           <h3 className="title">
             {props.parkName + ' National Park '} <br />
             <small className="state">{stateObj[npsData.states]}</small>
+            <small className="weather"> (currently {weatherData})</small>
+
+            {/* <span className */}
           </h3>
           <button className="close" onClick={props.onClose}>
             Close

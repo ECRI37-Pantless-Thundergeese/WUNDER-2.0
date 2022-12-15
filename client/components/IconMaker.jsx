@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Icon from './Icon.jsx';
 
 // import in the images.js file
-import images from '../public/images.js';
+import images from '../public/images_large.js';
 import parkCodes from '../public/parkcodes.js';
 
 function IconMaker(props) {

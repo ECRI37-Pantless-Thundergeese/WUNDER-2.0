@@ -70,7 +70,7 @@ const Sidebar = (props) => {
     }
   }
 
-  const activityOptions = ['biking', 'camping', 'climbing', 'fishing', 'guided', 'hiking', 'paddling', 'snorkeling', 'swimming', 'wildlife']
+  const activityOptions = ['biking', 'camping', 'climbing', 'fishing', 'hiking', 'paddling', 'snorkeling', 'swimming', 'tours', 'wildlife']
 
   const activityCheckbox = [];
 
