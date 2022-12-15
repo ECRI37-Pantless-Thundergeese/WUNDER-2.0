@@ -21,11 +21,12 @@ userController.createUser = (req, res, next) => {
 
 // Get user info
 userController.getUser = (req, res, next) => {
-  console.log(req.cookies);
+  // console.log(req.cookies);
   const { ssid } = req.cookies;
 
   User.findOne({ _id: ssid })
     .then((userData) => {
+      console.log(JSON.stringify(userData, null))
       res.locals.userData = userData; // <-- send back all user data
       return next();
     })
