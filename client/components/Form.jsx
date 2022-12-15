@@ -52,9 +52,9 @@ const Sidebar = (props) => {
       for (let item in activities) {
         activities[item] && activitiesDone.push(item);
       }
-      const data = { ...userParkData, [parkCode]: { date, activitiesDone, notes } };
+      const data = { ...props.userParkData, [parkCode]: { date, activitiesDone, notes } };
       axios.put(`http://localhost:3000/home/user/`, data, { withCredentials: true })
-        // .then(window.location.reload(false))
+        .then(window.location.reload(false))
         .then((data) => { })
         .catch((err) => console.log('AddPark fetch POST to api: ERROR: ', err));
     }

@@ -36,27 +36,15 @@ userController.getUser = (req, res, next) => {
 };
 
 // Add a park to a user's completed parks
-userController.addPark = async (req, res, next) => {
-  try {
-    const parkCode = req.params.parkCode;
-    const newPark = {
-      date: req.body.date,
-      notes: req.body.notes,
-      activitiesCompleted: req.body.activitiesDone,
-    };
-    // const user = await User.findOne({ name: req.body.name})
-    const user = await User.findOne({ name: 'Aalok' });
-    if (user) {
-      const parksVisited = { ...user.parksVisited, [parkCode]: newPark };
-      user.parksVisited = parksVisited;
-      const newUser = await user.save();
-      console.log('newuser :', newUser);
-    }
-    res.locals.park = user.parksVisited[parkCode]; // <-- send back the newly added park's info
-    return next();
-  } catch (err) {
-    return next(err);
-  }
+userController.addPark = (req, res, next) => {
+  const { ssid } = req.cookies;
+  console.log(req.body);
+  User.findOneAndUpdate({ _id: ssid }, { parksVisited: req.body })
+    .then((user) => {
+      res.locals.park = user;
+      return next();
+    })
+    .catch((err) => next(err));
 };
 
 // Get parks completed array for icon coloring on landing page
