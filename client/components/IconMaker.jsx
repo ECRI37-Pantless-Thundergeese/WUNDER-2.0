@@ -20,6 +20,7 @@ function IconMaker(props) {
     });
     parksArr.push(
       <Icon
+        userParkData={props.userParkData}
         key={park}
         park={park}
         imgLink={images[park]}

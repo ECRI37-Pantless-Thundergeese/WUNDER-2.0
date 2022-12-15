@@ -42,11 +42,11 @@ app.use('/NPS', NPSRouter);
 // Set up routers for '/user'
 app.use('/home/user', userRouter);
 
-app.post('/signup/request', 
+app.post('/signup/request',
   userController.createUser,
   (req, res) => {
     return res.redirect('/')
-})
+  })
 
 app.post('/', sessionController.isLoggedIn, (req, res) => {
   return res.redirect('/home')
@@ -55,11 +55,11 @@ app.post('/', sessionController.isLoggedIn, (req, res) => {
 app.post('/login', 
   userController.verifyUser,
   cookieController.setSSIDCookie,
-  sessionController.startSession, 
+  sessionController.startSession,
   (req, res) => {
     return res.redirect('/home');
     // return res.status(200).json(res.locals.parks);
-});
+  });
 
 // Handle serving of static files
 app.use('/build', express.static(path.join(__dirname, '../build')));

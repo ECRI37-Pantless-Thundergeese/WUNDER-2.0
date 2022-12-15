@@ -25,6 +25,7 @@ const Icon = (iconData) => {
         parkName={parkName}
         parkCode={parkCode}
         className={visible}
+        userParkData={iconData.userParkData[parkCode]}
       />
     </div >
   );
