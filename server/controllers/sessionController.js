@@ -1,16 +1,18 @@
-const Session = require('../models/sessionModel');
+const session = require('../models/sessionModel');
 const User = require('../models/userModel');
 
 const sessionController = {};
 
 // find the appropriate session for this request in the database,
 // the nverify whether or not the session is still valid.
-sessionController.isLoggedIn = (req, res, next) => {};
+sessionController.isLoggedIn = (req, res, next) => {
+  console.log('works')
+};
 
 //startSession - create and save a new Session into the database
 sessionController.startSession = (req, res, next) => {
   // we have cookie with SSID 
-  Session.create({ cookieId: res.locals.userID })
+session.create({ cookieId: res.locals.userID })
     .then((data) => {
       console.log('cookiedata :', data);
       console.log('This session has been started')

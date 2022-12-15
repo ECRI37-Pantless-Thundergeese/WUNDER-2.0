@@ -48,7 +48,11 @@ app.post('/signup/request',
     return res.redirect('/')
   })
 
-app.post('/login',
+app.post('/', sessionController.isLoggedIn, (req, res) => {
+  return res.redirect('/home')
+});
+
+app.post('/login', 
   userController.verifyUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
