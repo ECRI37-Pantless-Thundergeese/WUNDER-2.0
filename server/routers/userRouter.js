@@ -1,9 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/UserController');
 
-
 const userRouter = express.Router();
 
+// userRouter.get(
 // userRouter.get(
 //   '/:parkCode',
 //   userController.getUser,
@@ -15,9 +15,9 @@ const userRouter = express.Router();
 
 userRouter.get('/', userController.getUser, (_req, res) => {
   return res.status(200).json(res.locals.userData);
-})
+});
 
-userRouter.post('/:parkCode', userController.addPark, (_req, res) => {
+userRouter.put('/', userController.addPark, (_req, res) => {
   return res.status(200).json(res.locals.park);
 });
 
