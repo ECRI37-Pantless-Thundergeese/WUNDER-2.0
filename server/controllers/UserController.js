@@ -6,7 +6,7 @@ const userController = {};
 
 // Create a new user in the database
 userController.createUser = (req, res, next) => {
-  console.log('req.body :', req.body);
+  // console.log('req.body :', req.body);
   const { username, password, name, parksVisited } = req.body;
 
   User.create({ username, password, name, parksVisited: {} })
@@ -30,7 +30,7 @@ userController.getUser = (req, res, next) => {
       return next();
     })
     .catch((err) => {
-      console.log('User not found');
+      // console.log('User not found');
       return next({ message: 'Error in getUser' });
     });
 };
@@ -44,9 +44,9 @@ userController.addPark = async (req, res, next) => {
       notes: req.body.notes,
       activitiesCompleted: req.body.activitiesDone,
     };
-    // const user = await User.findOne({ name: req.body.name})
-    const user = await User.findOne({ name: 'Aalok' });
-    if (user) {
+
+    const user = await User.findOne({ name: req.body.username})
+    if (username) {
       const parksVisited = { ...user.parksVisited, [parkCode]: newPark };
       user.parksVisited = parksVisited;
       const newUser = await user.save();
@@ -55,7 +55,7 @@ userController.addPark = async (req, res, next) => {
     res.locals.park = user.parksVisited[parkCode]; // <-- send back the newly added park's info
     return next();
   } catch (err) {
-    return next(err);
+    return next({err: 'cannot add park, user not found'});
   }
 };
 
