@@ -8,7 +8,7 @@ const Modal = (props) => {
   }
 
   // declare userData using hooks
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(props.userParkData);
   const [npsData, setNpsData] = useState([]);
 
   // const testData = {
@@ -19,20 +19,12 @@ const Modal = (props) => {
 
   // send fetch request to DB to get user info
   useEffect(() => {
-    axios.get(`http://localhost:3000/home/NPS/modalInfo/${props.parkCode}`, { withCredentials: true })
+    axios.get(`http://localhost:3000/NPS/modalInfo/${props.parkCode}`, { withCredentials: true })
       .then((res) => {
         setNpsData(res.data);
         console.log('data from NPS get request: ', res.data);
       })
       .catch((err) => console.log('error fetching NPS data', err));
-
-    axios.get(`http://localhost:3000/home/user/${props.parkCode}`, { withCredentials: true })
-      .then((res) => {
-        // console.log('data in the modal is: ', data);
-        setUserData(res.data);
-        // console.log('user data: ', data);
-      })
-      .catch((err) => console.log('error getting user data', err));
   }, []);
 
   // iterate over activities completed in park activities
@@ -58,8 +50,9 @@ const Modal = (props) => {
 
   // declare a function that checks if userData is null
   function userDataExists() {
+    console.log('userData', userData);
     console.log('npsData inside userDataExists :', npsData);
-    if (userData.date) {
+    if (userData !== undefined) {
       return (
         <div className="user_info">
           {/* <h4>User Log</h4> */}
