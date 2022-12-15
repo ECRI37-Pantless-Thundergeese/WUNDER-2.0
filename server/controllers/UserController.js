@@ -7,16 +7,16 @@ const userController = {};
 // Create a new user in the database
 userController.createUser = (req, res, next) => {
   console.log('req.body :', req.body)
-  const { username, password, name} = req.body
-  
-  User.create({ username, password, name })
+  const { username, password, name } = req.body
+
+  User.create({ username, password, name, parksVisited: {} })
     .then((user) => {
-    res.locals.newUser = user
-    return next();
-  })
-   .catch ((err) => {
-    return next(err);
-  });
+      res.locals.newUser = user
+      return next();
+    })
+    .catch((err) => {
+      return next(err);
+    });
 };
 
 // Get user info
@@ -60,10 +60,11 @@ userController.addPark = async (req, res, next) => {
 };
 
 // Get parks completed array for icon coloring on landing page
-userController.getParks = (_req, res, next) => {
-  const {userID} = res.locals
-  
-  User.findOne({_id: userID})
+userController.getParks = (req, res, next) => {
+  console.log(req.cookies);
+  const { ssid } = req.cookies;
+
+  User.findOne({ _id: ssid })
     .then((userData) => {
       res.locals.parks = Object.keys(userData.parksVisited); // <-- send back array of parks completed
       return next();
@@ -89,14 +90,14 @@ userController.getParkInfo = (req, res, next) => {
 };
 
 userController.verifyUser = (req, res, next) => {
-  const { password, username } = req.body; 
+  const { password, username } = req.body;
   console.log('inside verifyUser')
-  User.findOne({ username: `${username}`})
+  User.findOne({ username: `${username}` })
     .then((doc) => {
       // if username doesn't exist, send them to sign up
       if (!doc) {
-          return res.redirect('/signup')
-        }
+        return res.redirect('/signup')
+      }
       // check password
       bcrypt
         .compare(password, doc.password)
@@ -112,19 +113,19 @@ userController.verifyUser = (req, res, next) => {
         })
         .catch((err) => {
           return next({
-          log: 'Caught error while verifying password in verifyUser middleware',
-          status: 400,
-          message: { err: 'An unknown error occured.' },
+            log: 'Caught error while verifying password in verifyUser middleware',
+            status: 400,
+            message: { err: 'An unknown error occured.' },
+          })
         })
-      })
-    .catch((err) => {
-      return next({
-        log: 'Caught error while verifying username in verifyUser middleware',
-        status: 400,
-        message: { err: 'An unknown error occured.' },
-      });
-    })
-  });
+        .catch((err) => {
+          return next({
+            log: 'Caught error while verifying username in verifyUser middleware',
+            status: 400,
+            message: { err: 'An unknown error occured.' },
+          });
+        })
+    });
 };
 
 

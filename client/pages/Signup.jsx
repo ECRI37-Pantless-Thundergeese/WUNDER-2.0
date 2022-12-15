@@ -9,6 +9,8 @@ const Signup = (props) => {
           <input className="formInfo" id="username" name="username" type="text"></input>
           <label htmlFor="password">Password: </label>
           <input className="formInfo" id="password" name="password" type="password"></input>
+          <label htmlFor="name">Name: </label>
+          <input className="formInfo" id="name" name="name" type="text"></input>
           <input className="signupBtn" type="submit" value="Sign Up"></input>
         </form>
       </div>

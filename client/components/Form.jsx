@@ -51,12 +51,7 @@ const Sidebar = (props) => {
         activities[item] && activitiesDone.push(item);
       }
       // console.log({ parkCode, date, activitiesDone, notes });
-      fetch(`http://localhost:3000/home/user/${parkCode}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/JSON' },
-        body: JSON.stringify({ parkCode, date, activitiesDone, notes }),
-      })
-        .then((res) => res.json())
+      axios.post(`http://localhost:3000/home/user/${parkCode}`, { parkCode, date, activitiesDone, notes }, { withCredentials: true })
         .then(window.location.reload(false))
         .then((data) => { })
         .catch((err) => console.log('AddPark fetch POST to api: ERROR: ', err));
@@ -72,6 +67,24 @@ const Sidebar = (props) => {
       parkOptions.push(<option value={parkcodes[park]}>{park}</option>);
     }
   }
+
+  const activityOptions = ['biking', 'camping', 'climbing', 'fishing', 'guided', 'hiking', 'paddling', 'snorkeling', 'swimming', 'wildlife']
+
+  const activityCheckbox = [];
+
+  // activityOptions.forEach((element) => {
+  //   activityCheckbox.push(
+  //     <input
+  //       type="checkbox"
+  //       id={element}
+  //       value={activities[element]}
+  //       onChange={(e) => toggleActivities(e.target.id)}
+  //     />{ ' '}
+  //   < label htmlFor = { element } > { element[0].toUpperCase() + element.substring(1) }</label >
+  // )
+  // }
+  // )
+
 
   // render an option element for Select, pass in the parkCode value as value, and give the label/input as the parkCode key
 
@@ -92,14 +105,15 @@ const Sidebar = (props) => {
           </select>
         </div>
 
-
         <h3>Date Visited:</h3>
         <input
+          name="date"
           type="date"
           id="date_visited"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
+
         <h3>Activities Done</h3>
         <div className="checkboxes">
           <input
@@ -176,6 +190,7 @@ const Sidebar = (props) => {
         <h3>Notes:</h3>
         <textarea
           className="comments"
+          name="notes"
           placeholder="Weather was great, but the crowd wasn't..."
           rows="10"
           cols="28"
@@ -190,9 +205,8 @@ const Sidebar = (props) => {
         <li>Stretch Feature</li>
         <li>Stretch Feature</li> */}
 
-        <button type="submit" id="submit" onClick={savePark}>
-          Save Park
-        </button>
+        <input type="submit" id="submit" value="Save Park" onClick={savePark}>
+        </input>
         {error ? <span className="errorMsg">{error}</span> : null}
       </form>
       {/* <ParkTally /> */}
