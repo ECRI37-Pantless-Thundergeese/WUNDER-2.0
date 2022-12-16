@@ -35,11 +35,11 @@ const Modal = (props) => {
   function parksActivitiesExist() {
     // declare parkActivities array, initialized to strongpty arr
     const parkActivitiesList = [];
-    if (userData.activitiesCompleted) {
-      for (let i = 0; i < userData.activitiesCompleted.length; i++) {
+    if (userData.activitiesDone) {
+      for (let i = 0; i < userData.activitiesDone.length; i++) {
         // create list items for each of these activities
         // push to parkActivities arr
-        parkActivitiesList.push(<li>{userData.activitiesCompleted[i]}</li>);
+        parkActivitiesList.push(<li>{userData.activitiesDone[i]}</li>);
       }
       return (
         <p className="park_activities">
@@ -99,7 +99,7 @@ const Modal = (props) => {
           <h3 className="title">
             {props.parkName + ' National Park '} <br />
             <small className="state">{stateObj[npsData.states]}</small>
-            <small className="weather"> (currently {weatherData})</small>
+            <small className="weather"> (currently {weatherData}° F)</small>
 
             {/* <span className */}
           </h3>
