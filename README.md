@@ -1,4 +1,4 @@
-# Iteration on  aka WUNDER THUNDERGOOSE 
+# WUNDER 2.0
 
 In our most recent update, we implemented the following changes to WUNDER
 We are very close to launching this app!
